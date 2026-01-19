@@ -4,7 +4,7 @@ import Controls from './components/Controls';
 import TextureRipper from './components/TextureRipper';
 import { UploadedImage, LayoutConfig } from './types';
 import { renderCollageToBlob, renderCollage } from './utils/layoutEngine';
-import { Download, AlertCircle, X, Maximize2, ArrowUp, Layers } from 'lucide-react';
+import { Download, AlertCircle, X, Maximize2, ArrowUp, Layers, Copy, Check } from 'lucide-react';
 
 const App: React.FC = () => {
   const [images, setImages] = useState<UploadedImage[]>([]);
@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Clean up object URLs to prevent memory leaks
   useEffect(() => {
@@ -55,6 +56,12 @@ const App: React.FC = () => {
     setGeneratedBlob(null);
     setPreviewUrl(null);
     setError(null);
+  };
+
+  const handleCopyGroup = () => {
+    navigator.clipboard.writeText("1025085144");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const generateCollage = async () => {
@@ -104,11 +111,29 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-4 md:p-8 font-sans pb-32">
       <header className="max-w-7xl mx-auto mb-10 flex flex-col items-center text-center gap-6">
-        <div>
+        <div className="flex flex-col items-center gap-3">
           <h1 className="text-3xl font-bold flex items-center justify-center gap-2 text-white">
             <Layers className="w-8 h-8 text-indigo-400" />
             多重纹理
           </h1>
+          
+          <div className="flex items-center justify-center text-sm text-gray-500 font-medium tracking-wide">
+            <span>by 吊儿郎当</span>
+            <span className="mx-2 opacity-30">|</span>
+            <button 
+              onClick={handleCopyGroup}
+              className="relative group hover:text-indigo-400 transition-colors cursor-pointer flex items-center gap-1"
+            >
+              (交流群: 1025085144)
+              {/* Tooltip */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap flex items-center gap-1 shadow-lg z-50">
+                {copied ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                {copied ? '已复制' : '点击复制群号'}
+                {/* Arrow */}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-700"></div>
+              </div>
+            </button>
+          </div>
         </div>
       </header>
 
