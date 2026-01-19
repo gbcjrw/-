@@ -1,0 +1,5 @@
+{
+  "name": "多重纹理",
+  "description": "创建 10,000x10,000 像素的巨幅图片拼贴。",
+  "requestFramePermissions": []
+}
